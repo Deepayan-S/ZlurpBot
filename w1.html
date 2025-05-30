@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎬 Universal Media Downloader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e6ccff; /* lilac */
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 500px;
+      width: 100%;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      width: 100%;
+      max-width: 500px;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #resultBox {
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      width: 100%;
+      max-width: 500px;
+      display: none;
+    }
+    #thumbnail {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    /* New styles for the radio buttons */
+    .media-type-options {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    .media-type-options label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      user-select: none;
+    }
+    .media-type-options input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #007bff; /* modern color for radio */
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Universal Media Downloader</h1>
+
+  <div class="input-group">
+    <input type="text" id="urlInput" placeholder="https://www.instagram.com/reel/..." />
+
+    <div id="mediaType" class="media-type-options">
+      <label>
+        <input type="radio" name="mediaType" value="video" checked />
+        <span>Video</span>
+      </label>
+      <label>
+        <input type="radio" name="mediaType" value="audio" />
+        <span>Audio</span>
+      </label>
+    </div>
+  </div>
+
+  <button onclick="fetchVideo()">🔽 Fetch Media</button>
+
+  <div id="resultBox">
+    <h3 id="videoTitle"></h3>
+    <img id="thumbnail" src="" alt="Video thumbnail" />
+    <br />
+    <a id="downloadLink" href="#" download>⬇️ Download</a>
+  </div>
+
+  <script>
+    async function fetchVideo() {
+      const url = document.getElementById("urlInput").value;
+      // Get selected radio value here
+      const mediaType = document.querySelector('input[name="mediaType"]:checked').value;
+      const resultBox = document.getElementById("resultBox");
+      const titleBox = document.getElementById("videoTitle");
+      const thumbnailImg = document.getElementById("thumbnail");
+      const downloadBtn = document.getElementById("downloadLink");
+
+      resultBox.style.display = "none";
+
+      try {
+        const response = await fetch("https://your-ngrok-or-backend-url.com/download", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            url: url,
+            type: mediaType,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.download_url) {
+          titleBox.innerText = data.title;
+          thumbnailImg.src = data.thumbnail;
+          downloadBtn.href = data.download_url;
+
+          resultBox.style.display = "block";
+        } else {
+          alert("Something went wrong. Make sure the link is public and valid.");
+        }
+      } catch (error) {
+        alert("Error fetching media. Please try again later.");
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>
