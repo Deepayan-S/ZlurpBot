@@ -4,5 +4,5 @@ buildCommand = "apt-get update && apt-get install -y ffmpeg"
 
 [deploy]
 startCommand = "python3 bot.py"
-restartPolicyType = "on-failure"
+restartPolicyType = "never"  # or "always" or "on-failure" 
 restartPolicyMaxRetries = 10
