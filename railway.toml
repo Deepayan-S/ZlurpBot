@@ -1,0 +1,8 @@
+[build]
+builder = "nixpacks"
+buildCommand = "apt-get update && apt-get install -y ffmpeg"
+
+[deploy]
+startCommand = "python3 bot.py"
+restartPolicyType = "on-failure"
+restartPolicyMaxRetries = 10
