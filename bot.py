@@ -30,7 +30,7 @@ def download_media(url, mode='video'):
                 'outtmpl': os.path.join(temp_dir, '%(title)s.%(ext)s'),
                 'quiet': True,
                 'no_warnings': True,
-                'ffmpeg_location': r'location\ffmpeg\bin\ffmpeg.exe',
+                'ffmpeg_location': '/usr/bin/ffmpeg',  # Updated for Railway
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'mp3',
@@ -43,7 +43,7 @@ def download_media(url, mode='video'):
                 'outtmpl': os.path.join(temp_dir, '%(title)s.%(ext)s'),
                 'quiet': True,
                 'no_warnings': True,
-                'ffmpeg_location': r'location\ffmpeg\bin\ffmpeg.exe',
+                'ffmpeg_location':'/usr/bin/ffmpeg',  # Updated for Railway
             }
         with yt_dlp.YoutubeDL(opts) as ydl:
             try:
